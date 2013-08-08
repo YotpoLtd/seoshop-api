@@ -1,6 +1,6 @@
 # Seoshop::Api
 
-TODO: Write a gem description
+This library provides a wrapper around the SEOshop REST API for use within Ruby apps or via the console.
 
 ## Installation
 
