@@ -23,9 +23,8 @@ Configure:
 
 Seoshop.configure do |conf|
   conf.app_key = 'app_key'
-  conf.secret = 'secret
+  conf.secret = 'secret'
 end
-
 ```
 
 Use Client:
@@ -35,7 +34,6 @@ Use Client:
 shop_api = Seoshop.client('shop_token', 'shop_language')
 
 shop_api.get_shop
-
 ```
 
 
