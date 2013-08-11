@@ -18,7 +18,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Configure:
+```ruby
+
+Seoshop.configure do |conf|
+  conf.app_key = 'app_key'
+  conf.secret = 'secret
+end
+
+```
+
+Use Client:
+
+```ruby
+
+shop_api = Seoshop.client('shop_token', 'shop_language')
+
+shop_api.get_shop
+
+```
+
 
 ## Contributing
 
