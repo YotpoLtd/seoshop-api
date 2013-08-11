@@ -1,5 +1,5 @@
-require 'seoshop/version'
-require 'seoshop/client'
+require 'seoshop-api/version'
+require 'seoshop-api/client'
 
 module Seoshop
   class << self
