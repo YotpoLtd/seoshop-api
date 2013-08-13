@@ -27,13 +27,16 @@ Seoshop.configure do |conf|
 end
 ```
 
-Use Client:
+Create a client, and use it to call the SEOshop api.
 
 ```ruby
 
-shop_api = Seoshop.client('shop_token', 'shop_language')
+shop_api = Seoshop::Client.new('shop_token', 'shop_language')
 
 shop_api.get_shop
+
+shop_api.get_products
+
 ```
 
 
