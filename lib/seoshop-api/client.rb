@@ -42,7 +42,7 @@ module Seoshop
     def get(url, params = {})
       params = params.inject({}){|memo,(k,v)| memo[k.to_s] = v; memo}
       preform(url, :get, params: params) do
-        return connection.get(url, params).body
+        return connection.get(url, params)
       end
     end
 

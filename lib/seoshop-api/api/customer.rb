@@ -1,15 +1,18 @@
 module Seoshop
   module Customer
     def get_customers(params = {})
-      get("#{@shop_language}/customers.json", params)['customers']
+      response = get("#{@shop_language}/customers.json", params)
+      response.body ? response.body['customers'] : false
     end
 
     def get_customers_count
-      get("#{@shop_language}/customers/count.json")['count']
+      response = get("#{@shop_language}/customers/count.json")
+      response.body ? response.body['count'] : false
     end
 
     def get_customer(customer_id)
-      get("#{@shop_language}/customers/#{customer_id}.json")['customer']
+      response = get("#{@shop_language}/customers/#{customer_id}.json")
+      response.body ? response.body['customer'] : false
     end
   end
 end

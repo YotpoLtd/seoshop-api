@@ -1,7 +1,8 @@
 module Seoshop
   module Account
     def get_rate_limit
-      get("#{@shop_language}/account/ratelimit.json")['accountRatelimit']
+      response = get("#{@shop_language}/account/ratelimit.json")
+      response.body ? response.body['accountRatelimit'] : false
     end
   end
 end
