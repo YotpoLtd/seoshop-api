@@ -32,6 +32,3 @@ module Seoshop
     end
   end
 end
-
-
-# shop_api.get_script(10779)
