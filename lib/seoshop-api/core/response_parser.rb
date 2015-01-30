@@ -12,7 +12,7 @@ module Seoshop
         elsif env[:status] == 401
           raise Seoshop::ResponseParser::HTTPUnauthorized.new 'invalid Seoshop credentials'
         elsif env[:status] == 403
-          raise env[:response].body.message
+          raise Seoshop::ResponseParser::HTTPForbidden.new env[:response].body.message
         elsif env[:status] == 404
           raise Seoshop::ResponseParser::HTTPNotFound.new env[:response].body.message
         elsif env[:status] == 429
@@ -95,6 +95,7 @@ module Seoshop
     end
 
     class Seoshop::ResponseParser::RateLimit < Exception; end
+    class Seoshop::ResponseParser::HTTPForbidden < Exception; end
     class Seoshop::ResponseParser::HTTPUnauthorized < Exception; end
     class Seoshop::ResponseParser::HTTPNotFound < Exception; end
   end
