@@ -8,6 +8,7 @@ require 'seoshop-api/version'
 require 'seoshop-api/api/order'
 require 'seoshop-api/api/shop'
 require 'seoshop-api/api/product'
+require 'seoshop-api/api/product_category'
 require 'seoshop-api/api/brand'
 require 'seoshop-api/api/customer'
 require 'seoshop-api/api/account'
@@ -21,6 +22,7 @@ module Seoshop
     include Seoshop::ShopScript
     include Seoshop::ShopTracking
     include Seoshop::Product
+    include Seoshop::ProductCategory
     include Seoshop::Customer
     include Seoshop::Account
     include Seoshop::Brand
