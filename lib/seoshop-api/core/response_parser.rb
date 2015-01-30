@@ -11,8 +11,10 @@ module Seoshop
           body = env[:response].body.response || env[:response].body
         elsif env[:status] == 401
           raise Seoshop::ResponseParser::HTTPUnauthorized.new 'invalid Seoshop credentials'
+        elsif env[:status] == 403
+          raise env[:response].body.message
         elsif env[:status] == 404
-          raise Seoshop::ResponseParser::HTTPNotFound.new( env[:response].body.response || env[:response].body )
+          raise Seoshop::ResponseParser::HTTPNotFound.new env[:response].body.message
         elsif env[:status] == 429
           rate_limits = env[:response_headers]['X-RateLimit-Remaining'].split('/')
           rate_limits_reset = env[:response_headers]['X-RateLimit-Reset'].split('/')

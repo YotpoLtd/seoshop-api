@@ -7,13 +7,11 @@ module Seoshop
     end
     def get_trackings(params = {})
       response = get("#{@shop_language}/shop/tracking.json", params)
-      puts response.body
       response.body ? response.body['shopTracking'] : false
     end
 
     def post_tracking(params)
-      response = post("/shop/tracking.json", { "shopTracking" => params })
-      puts response.body
+      response = post("#{@shop_language}/shop/tracking.json", { "shopTracking" => params })
       response.body ? response.body['shopTracking'] : false
     end
 
