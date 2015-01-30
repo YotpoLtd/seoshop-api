@@ -78,7 +78,7 @@ module Seoshop
     # Does a DELETE request to the url with the params
     #
     # @param url [String] the relative path in the Seoshop API
-    def delete(url, params)
+    def delete(url)
       preform(url, :delete) do
         return connection.delete(url)
       end
