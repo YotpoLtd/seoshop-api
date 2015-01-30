@@ -8,6 +8,7 @@ require 'seoshop-api/version'
 require 'seoshop-api/api/order'
 require 'seoshop-api/api/shop'
 require 'seoshop-api/api/product'
+require 'seoshop-api/api/brand'
 require 'seoshop-api/api/customer'
 require 'seoshop-api/api/account'
 
