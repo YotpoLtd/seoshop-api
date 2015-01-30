@@ -11,11 +11,13 @@ require 'seoshop-api/api/product'
 require 'seoshop-api/api/brand'
 require 'seoshop-api/api/customer'
 require 'seoshop-api/api/account'
+require 'seoshop-api/api/shop_script'
 
 module Seoshop
   class Client
     include Seoshop::Order
     include Seoshop::Shop
+    include Seoshop::ShopScript
     include Seoshop::Product
     include Seoshop::Customer
     include Seoshop::Account
