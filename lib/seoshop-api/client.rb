@@ -142,7 +142,7 @@ module Seoshop
         conn.adapter :typhoeus
       end
     end
-    private
+
     def convert_hash_keys(value)
       case value
         when Array
