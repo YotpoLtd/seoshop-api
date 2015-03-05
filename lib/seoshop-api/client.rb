@@ -10,6 +10,7 @@ require 'seoshop-api/api/shop'
 require 'seoshop-api/api/product'
 require 'seoshop-api/api/product_category'
 require 'seoshop-api/api/brand'
+require 'seoshop-api/api/tax'
 require 'seoshop-api/api/customer'
 require 'seoshop-api/api/account'
 require 'seoshop-api/api/shop_script'
@@ -26,6 +27,7 @@ module Seoshop
     include Seoshop::Customer
     include Seoshop::Account
     include Seoshop::Brand
+    include Seoshop::Tax
 
     attr_accessor :access_token
     attr_accessor :shop_language
