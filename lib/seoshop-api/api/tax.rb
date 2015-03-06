@@ -2,7 +2,7 @@ module Seoshop
   module Tax
 
     def get_taxes
-      response = get("#{@shop_language}/taxes.json", params)
+      response = get("#{@shop_language}/taxes.json")
       response.body ? response.body : false
     end
 
