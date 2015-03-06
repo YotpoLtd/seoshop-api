@@ -24,8 +24,8 @@ RSpec.describe Seoshop::Client do
   end
 
   it '#get_default_tax' do
-    expect(subject).to receive(:get_taxes){ taxes_response }
-    expected_output = {id: 1, rate: 0.21, title: 'New tax since 2014'}
+    expect(subject).to receive(:get_taxes) { taxes_response }
+    expected_output = { id: 1, rate: 0.21, title: 'New tax since 2014' }
     expect(subject.get_default_tax).to eq(expected_output)
   end
 end
