@@ -8,16 +8,24 @@ require 'seoshop-api/version'
 require 'seoshop-api/api/order'
 require 'seoshop-api/api/shop'
 require 'seoshop-api/api/product'
+require 'seoshop-api/api/product_category'
+require 'seoshop-api/api/brand'
 require 'seoshop-api/api/customer'
 require 'seoshop-api/api/account'
+require 'seoshop-api/api/shop_script'
+require 'seoshop-api/api/shop_tracking'
 
 module Seoshop
   class Client
     include Seoshop::Order
     include Seoshop::Shop
+    include Seoshop::ShopScript
+    include Seoshop::ShopTracking
     include Seoshop::Product
+    include Seoshop::ProductCategory
     include Seoshop::Customer
     include Seoshop::Account
+    include Seoshop::Brand
 
     attr_accessor :access_token
     attr_accessor :shop_language
@@ -74,7 +82,7 @@ module Seoshop
     # Does a DELETE request to the url with the params
     #
     # @param url [String] the relative path in the Seoshop API
-    def delete(url, params)
+    def delete(url)
       preform(url, :delete) do
         return connection.delete(url)
       end
