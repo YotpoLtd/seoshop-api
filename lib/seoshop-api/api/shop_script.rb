@@ -11,8 +11,8 @@ module Seoshop
       response.body ? response.body['shop_scripts'] || [] : []
     end
 
-    def post_script(params, check_if_already_exists = false)
-      return false if check_if_already_exists && get_scripts.any?{|el| params[:body] == el.body }
+    def post_script(params, options = {})
+      return false if options[:skip_on_exists] && get_scripts.any?{|el| params[:body] == el.body }
 
       response = post("#{@shop_language}/shop/scripts.json", { "shopScript" => params })
       response.body ? response.body['shopScript'] : false
