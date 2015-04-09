@@ -11,7 +11,9 @@ module Seoshop
       response.body ? response.body['shopTracking'] : false
     end
 
-    def post_tracking(params)
+    def post_tracking(params, check_if_already_exists = false)
+      return false if check_if_already_exists && get_trackings.any?{|el| params[:body] == el.body }
+
       response = post("#{@shop_language}/shop/tracking.json", { "shopTracking" => params })
       response.body ? response.body['shopTracking'] : false
     end
