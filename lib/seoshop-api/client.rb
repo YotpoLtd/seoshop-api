@@ -15,6 +15,7 @@ require 'seoshop-api/api/customer'
 require 'seoshop-api/api/account'
 require 'seoshop-api/api/shop_script'
 require 'seoshop-api/api/shop_tracking'
+require 'seoshop-api/api/catalog'
 
 module Seoshop
   class Client
