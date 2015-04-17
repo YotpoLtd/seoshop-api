@@ -29,6 +29,7 @@ module Seoshop
     include Seoshop::Account
     include Seoshop::Brand
     include Seoshop::Tax
+    include Seoshop::Catalog
 
     attr_accessor :access_token
     attr_accessor :shop_language
