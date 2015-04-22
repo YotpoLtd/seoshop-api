@@ -15,7 +15,7 @@ module Seoshop
       return false if options[:skip_on_exists] && get_trackings.any?{|el| params[:content] == el.content }
 
       response = post("#{@shop_language}/shop/tracking.json", { "shopTracking" => params })
-      response.body ? response.body['shopTracking'] : false
+      response.status == 201
     end
 
     def update_tracking(tracking_id, params)

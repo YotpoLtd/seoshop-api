@@ -15,7 +15,7 @@ module Seoshop
       return false if options[:skip_on_exists] && get_scripts.any?{|el| params[:body] == el.body }
 
       response = post("#{@shop_language}/shop/scripts.json", { "shopScript" => params })
-      response.body ? response.body['shopScript'] : false
+      response.status == 201
     end
 
     def update_script(script_id, params)
