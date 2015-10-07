@@ -2,11 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Seoshop::Client do
 
-  subject { described_class.new('123', 'abc', 'http://localhost/seoshop-api') }
+  subject { described_class.new('123', 'NL', 'http://localhost/seoshop-api') }
 
   context '.new' do
     it 'assigns on creation' do
-      params = { access_token: '123', shop_language: 'abc' }
+      params = { access_token: '123', shop_language: 'NL' }
       expect(subject).to have_attributes(params)
     end
   end
@@ -62,6 +62,27 @@ RSpec.describe Seoshop::Client do
     it 'converts an array' do
       output = subject.send :convert_hash_keys, [{ a: 'a' }, { b: 'b' }]
       expect(output).to eq([{ 'a' => 'a' }, { 'b' => 'b' }])
+    end
+  end
+
+  context '#fetch_collection' do
+    let(:a_count_resource){ double('count_entity_resource', body: { 'count' => 90 }) }
+    let(:a_resource_page_1){ double('entity_resource', body: { 'the_custom_entity' => [{'data' => 1}]}) }
+    let(:a_resource_page_2){ double('entity_resource', body: { 'the_custom_entity' => [{'data' => 2}]}) }
+    it 'calls count for given entity name and fetches all data per its page with custom entity access name' do
+      expect(subject).to receive(:get).with('NL/the_entities/count.json'){ a_count_resource }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=1'){ a_resource_page_1 }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=2'){ a_resource_page_2 }
+
+      result = subject.fetch_collection('the_entities', as: 'the_custom_entity')
+      expect(result).to eq([{'data' => 1}, {'data' => 2}])
+    end
+
+    it 'returns empty collection if count is zero' do
+      expect(subject).to receive(:get).with('NL/the_entities/count.json'){ double('zero_count', body: {'count' => 0}) }
+
+      result = subject.fetch_collection('the_entities', as: 'the_custom_entity')
+      expect(result).to eq([])
     end
   end
 end

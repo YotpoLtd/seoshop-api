@@ -16,6 +16,7 @@ require 'seoshop-api/api/account'
 require 'seoshop-api/api/shop_script'
 require 'seoshop-api/api/shop_tracking'
 require 'seoshop-api/api/catalog'
+require 'seoshop-api/fetch_resource_helper'
 
 module Seoshop
   class Client
@@ -30,6 +31,7 @@ module Seoshop
     include Seoshop::Brand
     include Seoshop::Tax
     include Seoshop::Catalog
+    include Seoshop::FetchResourceHelper
 
     attr_accessor :access_token
     attr_accessor :shop_language
