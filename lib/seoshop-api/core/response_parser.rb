@@ -22,8 +22,8 @@ module Seoshop
           seconds = rate_limits_reset[1] if rate_limits[1] == '-1'
           seconds = rate_limits_reset[2] if rate_limits[2] == '-1'
           raise Seoshop::ResponseParser::RateLimit.new "RateLimit reset in #{seconds} seconds"
-        elsif env[:response] && env[:response].body && env[:response].body.status
-          body = env[:response].body.status
+        elsif env[:response] && env[:response].body && env[:response].status
+          body = env[:response].body
         end
         env[:body] = body
       end
