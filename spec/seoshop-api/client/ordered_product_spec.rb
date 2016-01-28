@@ -18,7 +18,7 @@ RSpec.describe Seoshop::Client::OrderedProduct do
   context '#create' do
     it 'should throw error when ordered product api response is not 201' do
       response.status = 500
-      expect{subject.create}.to raise_error
+      expect{subject.create}.to raise_error(StandardError)
     end
 
     it 'should not throw error when ordered product api response is 201' do
