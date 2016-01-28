@@ -4,7 +4,6 @@ module Seoshop
     end
 
     attr_reader :id, :client, :checkout_details, :payment_details, :shipping_details, :checkout_id, :checkout_body
-    alias :before_validation :update_shipping_and_paymeny_info
 
     def initialize(client, checkout_details, payment_details, shipping_details)
       @client = client
@@ -16,7 +15,7 @@ module Seoshop
     end
 
     def valid?
-      before_validation
+      update_shipping_and_paymeny_info
       client.get("#{language}/checkouts/#{checkout_id}/validate.json").body[:validated]
     end
 
