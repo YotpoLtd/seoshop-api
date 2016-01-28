@@ -108,6 +108,14 @@ module Seoshop
       end
     end
 
+    def create_order(checkout_details, payment_details, shipping_details)
+      Seoshop::Client::Order.new(self, checkout_details, payment_details, shipping_details)
+    end
+
+    def create_ordered_product(checkout_id, shop_code, quantity, price)
+      Seoshop::Client::OrderedProduct.new(self, checkout_id, { variant: shop_code, quantity: quantity, special_price_inclusive: price })
+    end
+
     private
 
     #
@@ -158,14 +166,6 @@ module Seoshop
         else
           value
       end
-    end
-
-    def create_order(checkout_details, payment_details, shipping_details)
-      Seoshop::Client::Order.new(self, checkout_details, payment_details, shipping_details)
-    end
-
-    def create_ordered_product(checkout_id, shop_code, quantity, price)
-      Seoshop::Client::OrderedProduct.new(self, { variant: shop_code, quantity: quantity, special_price_inclusive: price })
     end
   end
 end
