@@ -7,7 +7,7 @@ module Seoshop
     end
 
     def create
-      response = @client.post("#{@language}/checkouts/#{@checkout_id}/products.json", @details)
+      response = @client.post("#{@client.shop_language}/checkouts/#{@checkout_id}/products.json", @details)
       fail "Checkout with id: #{@checkout_id} could not add product with variant id #{@shop_code}." unless response.status == 201
     end
   end
