@@ -84,7 +84,7 @@ RSpec.describe Seoshop::Client::Order do
       expect{subject.update({ paymentStatus: 'paid' })}.not_to raise_error
     end
 
-    it 'should throw errors if api call to update succeeds' do
+    it 'should throw errors if api call to update fails' do
       response.status = 500
       subject.stubs(:id).returns(47)
       client.stubs(:put).with("#{client.shop_language}/orders/#{subject.id }.json", order: { paymentStatus: 'paid' })
