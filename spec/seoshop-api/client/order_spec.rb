@@ -26,7 +26,7 @@ RSpec.describe Seoshop::Client::Order do
   end
 
   context '#valid?' do
-    it 'should throw error if update shipping or payment info fails' do
+    it 'should throw error if update! shipping or payment info fails' do
       response.body = { status: 404 }
 
       allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }) { response }
@@ -72,19 +72,19 @@ RSpec.describe Seoshop::Client::Order do
   end
 
   context '#udpate' do
-    it 'should not throw error if api call to update succeeds' do
+    it 'should not throw error if api call to update! succeeds' do
       response.body = { order_id: 47 }
       response.status = 200
       allow(subject).to receive(:id) { 47 }
       allow(client).to receive(:put).with("#{client.shop_language}/orders/#{subject.id}.json", order: { paymentStatus: 'paid' }) { response }
-      expect{subject.update({ paymentStatus: 'paid' })}.not_to raise_error
+      expect{subject.update!({ paymentStatus: 'paid' })}.not_to raise_error
     end
 
-    it 'should throw errors if api call to update fails' do
+    it 'should throw errors if api call to update! fails' do
       response.status = 500
       allow(subject).to receive(:id) {  47 }
       allow(client).to receive(:put).with("#{client.shop_language}/orders/#{subject.id }.json", order: { paymentStatus: 'paid' }) { response }
-      expect{subject.update({ paymentStatus: 'paid' })}.to raise_error(Seoshop::Client::Order::CheckoutError)
+      expect{subject.update!({ paymentStatus: 'paid' })}.to raise_error(Seoshop::Client::Order::CheckoutError)
     end
   end
 end

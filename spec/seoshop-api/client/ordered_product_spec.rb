@@ -14,14 +14,14 @@ RSpec.describe Seoshop::Client::OrderedProduct do
     expect(client).to receive(:post).with("#{client.shop_language}/checkouts/#{47}/products.json", details) { response }
   end
 
-  context '#create' do
+  context '#create!' do
     it 'should throw error when ordered product api response is not 201' do
       response.status = 500
-      expect{subject.create}.to raise_error(StandardError)
+      expect{subject.create!}.to raise_error(StandardError)
     end
 
     it 'should not throw error when ordered product api response is 201' do
-      expect{subject.create}.not_to raise_error
+      expect{subject.create!}.not_to raise_error
     end
   end
 end

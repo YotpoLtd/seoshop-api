@@ -100,7 +100,7 @@ RSpec.describe Seoshop::Client do
 
     it 'returns an ordered_porduct client' do
       ordered_product_client = subject.create_ordered_product_client('47', '123', 23, true)
-      expect(ordered_product_client).to respond_to(:create)
+      expect(ordered_product_client).to respond_to(:create!)
     end
   end
 end
