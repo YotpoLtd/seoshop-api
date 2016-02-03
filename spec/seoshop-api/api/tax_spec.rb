@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Seoshop::Client do
 
-  subject { described_class.new(mock('token'), mock('language')) }
+  subject { described_class.new(double('token'), double('language')) }
 
   let(:taxes_response) do
     {
@@ -24,7 +24,7 @@ RSpec.describe Seoshop::Client do
   end
 
   it '#get_default_tax' do
-    subject.stubs(:get_taxes).returns(taxes_response)
+    expect(subject).to receive(:get_taxes) { taxes_response }
     expected_output = { id: 1, rate: 0.21, title: 'New tax since 2014' }
     expect(subject.get_default_tax).to eq(expected_output)
   end

@@ -11,8 +11,7 @@ RSpec.describe Seoshop::Client::OrderedProduct do
   end
 
   before do
-    client.stubs(:post).with("#{client.shop_language}/checkouts/#{47}/products.json", details)
-          .returns(response)
+    expect(client).to receive(:post).with("#{client.shop_language}/checkouts/#{47}/products.json", details) { response }
   end
 
   context '#create' do

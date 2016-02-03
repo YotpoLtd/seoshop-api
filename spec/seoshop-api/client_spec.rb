@@ -14,40 +14,40 @@ RSpec.describe Seoshop::Client do
 
   context '#get' do
     let(:params) { { 'foo' => 'bar' } }
-    let(:connection) { mock('connection') }
-    let(:do_block) { mock('do_block') }
+    let(:connection) { double('connection') }
+    let(:do_block) { double('do_block') }
 
     it 'preform get request' do
-      subject.stubs(:connection).returns(connection)
-      connection.stubs(:in_parallel?).returns(true)
-      connection.stubs(:get).with('http://example.com', params)
+      allow(subject).to receive(:connection) { connection }
+      allow(connection).to receive(:in_parallel?) { true }
+      allow(connection).to receive(:get).with('http://example.com', params)
 
-      subject.expects(:preform).with('http://example.com', :get, params: params)
+      expect(subject).to receive(:preform).with('http://example.com', :get, params: params)
       subject.get('http://example.com', params)
     end
   end
 
   context '#connection' do
-    let(:conf) { mock('conf') }
-    let(:parallel_manager) { mock('parallel_manager') }
+    let(:conf) { double('conf') }
+    let(:parallel_manager) { double('parallel_manager') }
 
     it 'constructs oAuth digest' do
-      Typhoeus::Hydra.stubs(:new).returns(parallel_manager)
+      allow(Typhoeus::Hydra).to receive(:new) { parallel_manager }
 
       version = 'Ruby' + Seoshop::VERSION
       params = { url: 'http://localhost/seoshop-api',
                  parallel_manager: parallel_manager,
                  headers: { seoshop_api_connector: version } }
-      Faraday.expects(:new).with(params).yields(conf)
+      expect(Faraday).to receive(:new).with(params).and_yield(conf)
 
-      conf.expects(:adapter).with(:typhoeus)
-      conf.expects(:basic_auth) # this could be improved
-      conf.expects(:request).with(:oj)
-      conf.expects(:response).with(:oj)
-      conf.expects(:response).with(:rashify)
+      expect(conf).to receive(:adapter).with(:typhoeus)
+      expect(conf).to receive(:basic_auth) # this could be improved
+      expect(conf).to receive(:request).with(:oj)
+      expect(conf).to receive(:response).with(:oj)
+      expect(conf).to receive(:response).with(:rashify)
 
-      conf.expects(:use).with(Seoshop::ResponseParser)
-      conf.expects(:use).with(:instrumentation)
+      expect(conf).to receive(:use).with(Seoshop::ResponseParser)
+      expect(conf).to receive(:use).with(:instrumentation)
 
       subject.send :connection
     end
@@ -66,21 +66,21 @@ RSpec.describe Seoshop::Client do
   end
 
   context '#fetch_collection' do
-    let(:a_count_resource){ mock('count_entity_resource', body: { 'count' => 90 }) }
-    let(:a_resource_page_1){ mock('entity_resource', body: { 'the_custom_entity' => [{'data' => 1}]}) }
-    let(:a_resource_page_2){ mock('entity_resource', body: { 'the_custom_entity' => [{'data' => 2}]}) }
+    let(:a_count_resource){ double('count_entity_resource', body: { 'count' => 90 }) }
+    let(:a_resource_page_1){ double('entity_resource', body: { 'the_custom_entity' => [{'data' => 1}]}) }
+    let(:a_resource_page_2){ double('entity_resource', body: { 'the_custom_entity' => [{'data' => 2}]}) }
 
     it 'calls count for given entity name and fetches all data per its page with custom entity access name' do
-      subject.stubs(:get).with('NL/the_entities/count.json').returns( a_count_resource )
-      subject.stubs(:get).with('NL/the_entities.json?page=1').returns( a_resource_page_1)
-      subject.stubs(:get).with('NL/the_entities.json?page=2').returns( a_resource_page_2 )
+      expect(subject).to receive(:get).with('NL/the_entities/count.json') { a_count_resource }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=1') { a_resource_page_1 }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=2') { a_resource_page_2 }
 
       result = subject.fetch_collection('the_entities', as: 'the_custom_entity')
       expect(result).to eq([{'data' => 1}, {'data' => 2}])
     end
 
     it 'returns empty collection if count is zero' do
-      subject.stubs(:get).with('NL/the_entities/count.json').returns(mock('zero_count', body: {'count' => 0}))
+      expect(subject).to receive(:get).with('NL/the_entities/count.json') { double('zero_count', body: {'count' => 0}) }
 
       result = subject.fetch_collection('the_entities', as: 'the_custom_entity')
       expect(result).to eq([])
@@ -93,7 +93,7 @@ RSpec.describe Seoshop::Client do
       shipping_details =  { id: 'external', tax_rate: '50' }
       payment_details = { discount: false }
 
-      Seoshop::Client::Order.stubs(:new).returns(OpenStruct.new(checkout_id: 47))
+      allow(Seoshop::Client::Order).to receive(:new) { (OpenStruct.new(checkout_id: 47)) }
       order_client = subject.create_order_client(checkout_details, shipping_details, payment_details)
       expect(order_client.checkout_id).to equal(47)
     end

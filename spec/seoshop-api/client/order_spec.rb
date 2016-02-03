@@ -13,8 +13,7 @@ RSpec.describe Seoshop::Client::Order do
   end
 
   before do
-    client.stubs(:post).with("#{client.shop_language}/checkouts.json", checkout_details)
-          .returns(response)
+    allow(client).to receive(:post).with("#{client.shop_language}/checkouts.json", checkout_details) { response }
   end
 
   context '#new' do
@@ -30,26 +29,24 @@ RSpec.describe Seoshop::Client::Order do
     it 'should throw error if update shipping or payment info fails' do
       response.body = { status: 404 }
 
-      client.stubs(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }).returns(response)
+      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }) { response }
       expect{subject.valid?}.to raise_error(Seoshop::Client::Order::CheckoutError)
     end
 
     it 'should return false if api validation of details fail' do
       response.body = { validated: false }
       response.status = 200
-      client.stubs(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details })
-                        .returns(response)
-      client.stubs(:get).with("#{client.shop_language}/checkouts/#{subject.checkout_id}/validate.json").returns(response)
+      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }) { response }
+      allow(client).to receive(:get).with("#{client.shop_language}/checkouts/#{subject.checkout_id}/validate.json") { response }
 
       expect(subject.valid?).to equal(false)
     end
 
-    it 'should return true if api validation of details returns true' do
+    it 'should return true if api validation of details {  true' do
       response.status = 200
       response.body = { validated: true }
-      client.stubs(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details })
-                        .returns(response)
-      client.stubs(:get).with("#{client.shop_language}/checkouts/#{subject.checkout_id}/validate.json").returns(response)
+      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }) { response }
+      allow(client).to receive(:get).with("#{client.shop_language}/checkouts/#{subject.checkout_id}/validate.json") { response }
 
       expect(subject.valid?).to equal(true)
     end
@@ -59,16 +56,16 @@ RSpec.describe Seoshop::Client::Order do
     it 'should throw errors if apii call to create order does not return 200 or 201' do
       response.status = 500
       response.body = { error: { message: 'test error', code: 100 } }
-      subject.stubs(:checkout_attrs).returns(checkout_details)
-      client.stubs(:post).returns(response)
+      allow(subject).to receive(:checkout_attrs) { (checkout_details) }
+      allow(client).to receive(:post) { response }
       expect{subject.save!}.to raise_error(Seoshop::Client::Order::CheckoutError)
     end
 
-    it 'should upate order with id if api call to create order returns 200 or 201' do
-      response.body = { order_id: 47 }
+    it 'should upate order with id if api call to create order {  200 or 201' do
+      response.body = { order_id:  47 }
       response.status = 200
-      subject.stubs(:checkout_attrs).returns(checkout_details)
-      client.stubs(:post).returns(response)
+      allow(subject).to receive(:checkout_attrs) { (checkout_details) }
+      allow(client).to receive(:post) { response }
       subject.save!
       expect(subject.id).to equal(47)
     end
@@ -78,17 +75,15 @@ RSpec.describe Seoshop::Client::Order do
     it 'should not throw error if api call to update succeeds' do
       response.body = { order_id: 47 }
       response.status = 200
-      subject.stubs(:id).returns(47)
-      client.stubs(:put).with("#{client.shop_language}/orders/#{subject.id}.json", order: { paymentStatus: 'paid' })
-                        .returns(response)
+      allow(subject).to receive(:id) { 47 }
+      allow(client).to receive(:put).with("#{client.shop_language}/orders/#{subject.id}.json", order: { paymentStatus: 'paid' }) { response }
       expect{subject.update({ paymentStatus: 'paid' })}.not_to raise_error
     end
 
     it 'should throw errors if api call to update fails' do
       response.status = 500
-      subject.stubs(:id).returns(47)
-      client.stubs(:put).with("#{client.shop_language}/orders/#{subject.id }.json", order: { paymentStatus: 'paid' })
-                        .returns(response)
+      allow(subject).to receive(:id) {  47 }
+      allow(client).to receive(:put).with("#{client.shop_language}/orders/#{subject.id }.json", order: { paymentStatus: 'paid' }) { response }
       expect{subject.update({ paymentStatus: 'paid' })}.to raise_error(Seoshop::Client::Order::CheckoutError)
     end
   end
