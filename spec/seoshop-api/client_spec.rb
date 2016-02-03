@@ -87,19 +87,19 @@ RSpec.describe Seoshop::Client do
     end
   end
 
-  context '#create_order' do
+  context '#create_order_client' do
     it 'returns an order client' do
       checkout_details = { shipping_address: 'test address', billing_address: 'test address' }
       shipping_details =  { id: 'external', tax_rate: '50' }
       payment_details = { discount: false }
 
       Seoshop::Client::Order.stubs(:new).returns(OpenStruct.new(checkout_id: 47))
-      order_client = subject.create_order(checkout_details, shipping_details, payment_details)
+      order_client = subject.create_order_client(checkout_details, shipping_details, payment_details)
       expect(order_client.checkout_id).to equal(47)
     end
 
     it 'returns an ordered_porduct client' do
-      ordered_product_client = subject.create_ordered_product('47', '123', 23, true)
+      ordered_product_client = subject.create_ordered_product_client('47', '123', 23, true)
       expect(ordered_product_client).to respond_to(:create)
     end
   end
