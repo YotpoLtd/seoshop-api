@@ -115,6 +115,3 @@ DEPENDENCIES
   pry
   rake
   seoshop-api!
-
-BUNDLED WITH
-   1.11.2

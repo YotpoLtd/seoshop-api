@@ -3,15 +3,17 @@ module Seoshop
     class CheckoutError < StandardError
     end
 
-    attr_reader :id, :client, :checkout_details, :payment_details, :shipping_details, :checkout_id, :checkout_body
+    attr_reader :order_id, :client, :checkout_details, :payment_details, :shipping_details, :checkout_id, :checkout_body
 
     def initialize(client, checkout_details, payment_details, shipping_details)
       @client = client
       @payment_details = payment_details
       @shipping_details = shipping_details
       @checkout_response = @client.post("#{language}/checkouts.json", checkout_details)
-      @checkout_id ||= @checkout_response[:id]
       @checkout_body ||= @checkout_response.body
+      if @checkout_body
+        @checkout_id ||= @checkout_body['id']
+      end
     end
 
     def valid?
@@ -22,7 +24,7 @@ module Seoshop
     def save!
       response = client.post("#{language}/checkouts/#{checkout_id}/order.json", checkout_attrs)
       if response.status == 201 || response.status == 200
-        @id = response.body[:order_id]
+        @order_id = response.body['order_id']
       else
         error = response.body[:error]
         fail CheckoutError, "Checkout with id: #{checkout_id} could not convert into an order. Errors: #{error[:message]} (code: #{error[:code]})"
@@ -30,9 +32,9 @@ module Seoshop
     end
 
     def update!(attrs)
-      response = client.put("#{language}/orders/#{id}.json", { order: attrs })
+      response = client.put("#{language}/orders/#{order_id}.json", { order: attrs })
       unless response.status == 200
-        fail CheckoutError, "Order with id: #{id} could not be updated."
+        fail CheckoutError, "Order with id: #{order_id} could not be updated."
       end
     end
 

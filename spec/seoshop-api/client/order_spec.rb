@@ -16,12 +16,10 @@ RSpec.describe Seoshop::Client::Order do
     allow(client).to receive(:post).with("#{client.shop_language}/checkouts.json", checkout_details) { response }
   end
 
-  context '#new' do
+  describe '.new' do
     it 'assigns on creation' do
-      response.id = 46
-      response.body = { 'checkout_id' => 46 }
+      response.body = { 'id' => 46 }
       expect(subject.checkout_id).to equal(46)
-      expect(subject.checkout_body['checkout_id']).to equal(46)
     end
   end
 
@@ -62,28 +60,28 @@ RSpec.describe Seoshop::Client::Order do
     end
 
     it 'should upate order with id if api call to create order {  200 or 201' do
-      response.body = { order_id:  47 }
+      response.body = { 'order_id' => 47 }
       response.status = 200
       allow(subject).to receive(:checkout_attrs) { (checkout_details) }
       allow(client).to receive(:post) { response }
       subject.save!
-      expect(subject.id).to equal(47)
+      expect(subject.order_id).to equal(47)
     end
   end
 
   context '#udpate' do
     it 'should not throw error if api call to update! succeeds' do
-      response.body = { order_id: 47 }
+      response.body = { 'order_id' => 47 }
       response.status = 200
-      allow(subject).to receive(:id) { 47 }
-      allow(client).to receive(:put).with("#{client.shop_language}/orders/#{subject.id}.json", order: { paymentStatus: 'paid' }) { response }
+      expect(subject).to receive(:order_id) {  47 }
+      allow(client).to receive(:put).with("#{client.shop_language}/orders/47.json", order: { paymentStatus: 'paid' }) { response }
       expect{subject.update!({ paymentStatus: 'paid' })}.not_to raise_error
     end
 
     it 'should throw errors if api call to update! fails' do
       response.status = 500
-      allow(subject).to receive(:id) {  47 }
-      allow(client).to receive(:put).with("#{client.shop_language}/orders/#{subject.id }.json", order: { paymentStatus: 'paid' }) { response }
+      expect(subject).to receive(:order_id).twice {  47 }
+      allow(client).to receive(:put).with("#{client.shop_language}/orders/47.json", order: { paymentStatus: 'paid' }) { response }
       expect{subject.update!({ paymentStatus: 'paid' })}.to raise_error(Seoshop::Client::Order::CheckoutError)
     end
   end
