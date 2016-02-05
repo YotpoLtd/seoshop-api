@@ -46,14 +46,15 @@ module Seoshop
     end
 
     def update_shipping_and_paymeny_info
-      response = client.put("#{language}/checkouts/#{checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details })
+      response = client.put("#{language}/checkouts/#{checkout_id}.json", { shipment_method: shipping_details, payment_method: payment_details })
       fail CheckoutError, "Checkout with id: #{checkout_id} could not be updated." unless response.status == 200
     end
 
     def checkout_attrs
-       sanitize_hash checkout_body.slice(:mode, :customer, :billing_address, :shipping_address, :newsletter, :terms, :notifications)
-       .merge(quote_id: checkout_body[:quote][:id])
-       .merge(shipment_method: checkout_body.slice(:shipment_method).slice(:id), payment_method: checkout_body.slice(:payment_method).slice(:id))
+      result = checkout_body.slice(:mode, :customer, :billing_address, :shipping_address, :newsletter, :terms, :notifications)
+        .merge(quote_id: checkout_body[:quote][:id])
+        .merge(shipment_method: checkout_body.slice(:shipment_method).slice(:id), payment_method: checkout_body.slice(:payment_method).slice(:id))
+      sanitize_hash(result)
     end
 
     def sanitize_hash(h)
