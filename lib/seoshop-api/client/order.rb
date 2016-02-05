@@ -3,7 +3,7 @@ module Seoshop
     class CheckoutError < StandardError
     end
 
-    attr_reader :order_id, :client, :checkout_details, :payment_details, :shipping_details, :checkout_id, :checkout_body
+    attr_reader :order_id, :client, :checkout_details, :payment_details, :shipping_details, :checkout_id, :checkout_body, :validation_body
 
     def initialize(client, checkout_details, payment_details, shipping_details)
       @client = client
@@ -18,7 +18,8 @@ module Seoshop
 
     def valid?
       update_shipping_and_paymeny_info
-      client.get("#{language}/checkouts/#{checkout_id}/validate.json").body[:validated]
+      @validation_body = client.get("#{language}/checkouts/#{checkout_id}/validate.json").body
+      @validation_body[:validated]
     end
 
     def save!
