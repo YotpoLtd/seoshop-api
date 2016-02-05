@@ -58,7 +58,8 @@ module Seoshop
     end
 
     def sanitize_hash(h)
-      h.keep_if {|_, v| v.compact.any? }.compact!
+      # h.keep_if {|_, v| v.compact.any? }.compact!
+      h.keep_if {|k, v| v.is_a?(Hash) ? !v.empty? && sanitize_hash(v) : !v.nil? }
     end
   end
 end
