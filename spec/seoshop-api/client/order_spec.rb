@@ -27,14 +27,14 @@ RSpec.describe Seoshop::Client::Order do
     it 'should throw error if update! shipping or payment info fails' do
       response.body = { status: 404 }
 
-      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }) { response }
+      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipment_method: shipping_details, payment_method: payment_details }) { response }
       expect{subject.valid?}.to raise_error(Seoshop::Client::Order::CheckoutError)
     end
 
     it 'should return false if api validation of details fail' do
       response.body = { validated: false }
       response.status = 200
-      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }) { response }
+      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipment_method: shipping_details, payment_method: payment_details }) { response }
       allow(client).to receive(:get).with("#{client.shop_language}/checkouts/#{subject.checkout_id}/validate.json") { response }
 
       expect(subject.valid?).to equal(false)
@@ -43,7 +43,7 @@ RSpec.describe Seoshop::Client::Order do
     it 'should return true if api validation of details {  true' do
       response.status = 200
       response.body = { validated: true }
-      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipping_method: shipping_details, payment_method: payment_details }) { response }
+      allow(client).to receive(:put).with("#{client.shop_language}/checkouts/#{subject.checkout_id}.json", { shipment_method: shipping_details, payment_method: payment_details }) { response }
       allow(client).to receive(:get).with("#{client.shop_language}/checkouts/#{subject.checkout_id}/validate.json") { response }
 
       expect(subject.valid?).to equal(true)
