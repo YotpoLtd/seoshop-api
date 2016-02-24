@@ -36,9 +36,9 @@ module Seoshop
     def update!(attrs)
       response = client.put("#{language}/orders/#{order_id}.json", { order: attrs })
       unless response.status == 200
-        fail CheckoutError, "Order with id: #{order_id} could not be updated."
+        fail CheckoutError, "Order with id: #{order_id} could not be updated"
       end
-      @number = response.body['number']
+      @number = response.body['order']['number']
     end
 
     private
