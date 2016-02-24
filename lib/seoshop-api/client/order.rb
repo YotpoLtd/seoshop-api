@@ -27,7 +27,6 @@ module Seoshop
       response = client.post("#{language}/checkouts/#{checkout_id}/order.json", checkout_attrs)
       if response.status == 201 || response.status == 200
         @order_id = response.body['order_id']
-        @number = response.body['number']
       else
         error = response.body[:error]
         fail CheckoutError, "Checkout with id: #{checkout_id} could not convert into an order. Errors: #{error[:message]} (code: #{error[:code]})"
@@ -39,6 +38,7 @@ module Seoshop
       unless response.status == 200
         fail CheckoutError, "Order with id: #{order_id} could not be updated."
       end
+      @number = response.body['number']
     end
 
     private

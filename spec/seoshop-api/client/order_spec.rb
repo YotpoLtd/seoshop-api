@@ -60,23 +60,24 @@ RSpec.describe Seoshop::Client::Order do
     end
 
     it 'should upate order with id' do
-      response.body = { 'order_id' => 47, 'number' => 'OR00047'  }
+      response.body = { 'order_id' => 47  }
       response.status = 200
       allow(subject).to receive(:checkout_attrs) { (checkout_details) }
       allow(client).to receive(:post) { response }
       subject.save!
       expect(subject.order_id).to eq(47)
-      expect(subject.number).to eq('OR00047')
+      expect(subject.number).to eq(nil)
     end
   end
 
   context '#udpate' do
     it 'should not throw error if api call to update! succeeds' do
-      response.body = { 'order_id' => 47 }
+      response.body = { 'order_id' => 47, 'number' => 'OR0000047' }
       response.status = 200
       expect(subject).to receive(:order_id) {  47 }
       allow(client).to receive(:put).with("#{client.shop_language}/orders/47.json", order: { paymentStatus: 'paid' }) { response }
       expect{subject.update!({ paymentStatus: 'paid' })}.not_to raise_error
+      expect(subject.number).to eq('OR0000047')
     end
 
     it 'should throw errors if api call to update! fails' do
