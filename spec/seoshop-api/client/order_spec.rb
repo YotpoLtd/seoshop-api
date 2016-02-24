@@ -59,13 +59,14 @@ RSpec.describe Seoshop::Client::Order do
       expect{subject.save!}.to raise_error(Seoshop::Client::Order::CheckoutError)
     end
 
-    it 'should upate order with id if api call to create order {  200 or 201' do
-      response.body = { 'order_id' => 47 }
+    it 'should upate order with id' do
+      response.body = { 'order_id' => 47, 'number' => 'OR00047'  }
       response.status = 200
       allow(subject).to receive(:checkout_attrs) { (checkout_details) }
       allow(client).to receive(:post) { response }
       subject.save!
-      expect(subject.order_id).to equal(47)
+      expect(subject.order_id).to eq(47)
+      expect(subject.number).to eq('OR00047')
     end
   end
 

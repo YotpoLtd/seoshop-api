@@ -3,7 +3,8 @@ module Seoshop
     class CheckoutError < StandardError
     end
 
-    attr_reader :order_id, :client, :checkout_details, :payment_details, :shipping_details, :checkout_id, :checkout_body, :validation_body
+    attr_reader :order_id, :client, :checkout_details, :payment_details, :shipping_details, :checkout_id,
+                :checkout_body, :validation_body, :number
 
     def initialize(client, checkout_details, payment_details, shipping_details)
       @client = client
@@ -26,6 +27,7 @@ module Seoshop
       response = client.post("#{language}/checkouts/#{checkout_id}/order.json", checkout_attrs)
       if response.status == 201 || response.status == 200
         @order_id = response.body['order_id']
+        @number = response.body['number']
       else
         error = response.body[:error]
         fail CheckoutError, "Checkout with id: #{checkout_id} could not convert into an order. Errors: #{error[:message]} (code: #{error[:code]})"
