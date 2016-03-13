@@ -18,20 +18,11 @@ Or install it yourself as:
 
 ## Usage
 
-Configure:
-```ruby
-
-Seoshop.configure do |conf|
-  conf.app_key = 'app_key'
-  conf.secret = 'secret'
-end
-```
-
 Create a client, and use it to call the SEOshop api.
 
 ```ruby
 
-shop_api = Seoshop::Client.new('shop_token', 'shop_language')
+shop_api = Seoshop::Client.new('api_key', 'api_secret', 'shop_token', 'shop_language', 'cluster_id')
 
 shop_api.get_shop
 
