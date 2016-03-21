@@ -1,5 +1,7 @@
 require 'seoshop-api/version'
 require 'seoshop-api/client'
+require 'seoshop-api/client/order'
+require 'seoshop-api/client/ordered_product'
 
 module Seoshop
   class << self

@@ -108,6 +108,14 @@ module Seoshop
       end
     end
 
+    def create_order_client(checkout_details, payment_details, shipping_details)
+      Seoshop::Client::Order.new(self, checkout_details, payment_details, shipping_details)
+    end
+
+    def create_ordered_product_client(checkout_id, variant_id, quantity, price)
+      Seoshop::Client::OrderedProduct.new(self, checkout_id, { variant_id: variant_id , quantity: quantity, special_price_incl: price })
+    end
+
     private
 
     #
