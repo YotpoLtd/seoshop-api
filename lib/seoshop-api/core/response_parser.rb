@@ -94,10 +94,10 @@ module Seoshop
       type
     end
 
-    class Seoshop::ResponseParser::RateLimit < Exception; end
-    class Seoshop::ResponseParser::HTTPForbidden < Exception; end
-    class Seoshop::ResponseParser::HTTPUnauthorized < Exception; end
-    class Seoshop::ResponseParser::HTTPNotFound < Exception; end
+    class Seoshop::ResponseParser::RateLimit < StandardError; end
+    class Seoshop::ResponseParser::HTTPForbidden < StandardError; end
+    class Seoshop::ResponseParser::HTTPUnauthorized < StandardError; end
+    class Seoshop::ResponseParser::HTTPNotFound < StandardError; end
   end
 end
 
