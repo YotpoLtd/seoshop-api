@@ -72,8 +72,8 @@ RSpec.describe Seoshop::Client do
 
     it 'calls count for given entity name and fetches all data per its page with custom entity access name' do
       expect(subject).to receive(:get).with('NL/the_entities/count.json') { a_count_resource }
-      expect(subject).to receive(:get).with('NL/the_entities.json?page=1') { a_resource_page_1 }
-      expect(subject).to receive(:get).with('NL/the_entities.json?page=2') { a_resource_page_2 }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=1&limit=50') { a_resource_page_1 }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=2&limit=50') { a_resource_page_2 }
 
       result = subject.fetch_collection('the_entities', as: 'the_custom_entity')
       expect(result).to eq([{'data' => 1}, {'data' => 2}])
@@ -93,8 +93,8 @@ RSpec.describe Seoshop::Client do
 
     it 'calls count for given entity name and fetches all data per its page with custom entity access name' do
       expect(subject).to receive(:get).with('NL/the_entities/count.json') { a_count_resource }
-      expect(subject).to receive(:get).with('NL/the_entities.json?page=1') { a_resource_page_1 }
-      expect(subject).to receive(:get).with('NL/the_entities.json?page=2') { a_resource_page_2 }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=1&limit=50') { a_resource_page_1 }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=2&limit=50') { a_resource_page_2 }
       result = []
       subject.fetch_in_batches('the_entities', as: 'the_custom_entity') do |batch|
         result += batch
