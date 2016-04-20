@@ -86,6 +86,29 @@ RSpec.describe Seoshop::Client do
       expect(result).to eq([])
     end
   end
+  context '#fetch_in_batches' do
+    let(:a_count_resource){ double('count_entity_resource', body: { 'count' => 90 }) }
+    let(:a_resource_page_1){ double('entity_resource', body: { 'the_custom_entity' => [{'data' => 1}]}) }
+    let(:a_resource_page_2){ double('entity_resource', body: { 'the_custom_entity' => [{'data' => 2}]}) }
+
+    it 'calls count for given entity name and fetches all data per its page with custom entity access name' do
+      expect(subject).to receive(:get).with('NL/the_entities/count.json') { a_count_resource }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=1') { a_resource_page_1 }
+      expect(subject).to receive(:get).with('NL/the_entities.json?page=2') { a_resource_page_2 }
+      result = []
+      subject.fetch_in_batches('the_entities', as: 'the_custom_entity') do |batch|
+        result += batch
+      end
+      expect(result).to eq([{'data' => 1}, {'data' => 2}])
+    end
+
+    it 'returns empty collection if count is zero' do
+      expect(subject).to receive(:get).with('NL/the_entities/count.json') { double('zero_count', body: {'count' => 0}) }
+
+      result = subject.fetch_collection('the_entities', as: 'the_custom_entity')
+      expect(result).to eq([])
+    end
+  end
 
   context '#create_order_client' do
     it 'returns an order client' do
