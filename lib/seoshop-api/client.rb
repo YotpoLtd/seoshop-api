@@ -155,8 +155,8 @@ module Seoshop
         conn.response :rashify
 
         # Setting request and response to use JSON/XML
-        conn.request :oj
-        conn.response :oj
+        conn.request :multi_json
+        conn.response :multi_json
 
         # Set to use instrumentals to get time logs
         conn.use :instrumentation
