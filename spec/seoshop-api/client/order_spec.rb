@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'ostruct'
 
 RSpec.describe Seoshop::Client::Order do
-  let(:client) { Seoshop::Client.new('123', 'NL', 'http://localhost/seoshop-api') }
+  let(:client) { Seoshop::Client.new('app_key', 'secret', '123', 'NL', 'eu1') }
   let(:checkout_details){ { shipping_address: 'test address', billing_address: 'test address' } }
   let(:shipping_details){ { id: 'external', tax_rate: '50' } }
   let(:payment_details){ { discoutn: false } }

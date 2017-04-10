@@ -100,6 +100,5 @@ module Seoshop
     class Seoshop::ResponseParser::HTTPNotFound < StandardError; end
   end
 end
-
-Faraday.register_middleware :response, oj: Seoshop::ParseOj
-Faraday.register_middleware :request, oj: Seoshop::EncodeOj
+Faraday::Middleware.register_middleware :response, oj: Seoshop::ParseOj
+Faraday::Middleware.register_middleware :request, oj: Seoshop::EncodeOj

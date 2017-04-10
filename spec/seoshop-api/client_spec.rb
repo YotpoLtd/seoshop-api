@@ -3,11 +3,16 @@ require 'ostruct'
 
 RSpec.describe Seoshop::Client do
 
-  subject { described_class.new('123', 'NL', 'http://localhost/seoshop-api') }
+  subject { described_class.new('app_key', 'secret', '123', 'NL', 'eu1') }
 
   context '.new' do
     it 'assigns on creation' do
-      params = { access_token: '123', shop_language: 'NL' }
+      params = {
+        api_key: 'app_key',
+        api_secret: 'secret',
+        access_token: '123',
+        shop_language: 'NL'
+      }
       expect(subject).to have_attributes(params)
     end
   end
@@ -35,7 +40,7 @@ RSpec.describe Seoshop::Client do
       allow(Typhoeus::Hydra).to receive(:new) { parallel_manager }
 
       version = 'Ruby' + Seoshop::VERSION
-      params = { url: 'http://localhost/seoshop-api',
+      params = { url: 'https://api.webshopapp.com/',
                  parallel_manager: parallel_manager,
                  headers: { seoshop_api_connector: version } }
       expect(Faraday).to receive(:new).with(params).and_yield(conf)

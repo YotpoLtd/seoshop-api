@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Seoshop::Client do
 
-  subject { described_class.new(double('token'), double('language')) }
+  subject { described_class.new('app_key', 'secret', '123', 'NL', 'eu1') }
 
   let(:taxes_response) do
     {
