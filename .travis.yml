@@ -1,0 +1,13 @@
+language: ruby
+rvm:
+- 2.2
+- 2.3
+- 2.4
+deploy:
+  provider: rubygems
+  api_key:
+    secure: Ub9rAJHJeLuFmi6MO/TA71cL9zRWW++rXhACeho+KZGJfn9XGrQD6wVhQJtEUlag0M+LzgWeAiorPK66oSM2ZLNkmHyyajoh9uwv6J6G2IZ+sbC3NqvmEAWltvy1JU4ElZKY3aVRLAL/1CTtvrmS1Fjv5gPKizW3FrBTIFlXMVg=
+  gem: seoshop-api
+  on:
+    branch: master
+    repo: YotpoLtd/seoshop-api
