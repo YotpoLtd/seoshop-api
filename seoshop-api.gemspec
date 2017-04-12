@@ -6,8 +6,8 @@ require 'seoshop-api/version'
 Gem::Specification.new do |spec|
   spec.name          = "seoshop-api"
   spec.version       = Seoshop::VERSION
-  spec.authors       = ["Nimrod Popper"]
-  spec.email         = ["nimrod@yotpo.com"]
+  spec.authors       = ["Nimrod Popper", "Vladislav Shub"]
+  spec.email         = ["nimrod@yotpo.com", "vlad@yotpo.com"]
   spec.description   = %q{Ruby wrapper for SEOshop API - written by Yotpo}
   spec.summary       = %q{Ruby wrapper for SEOshop API - written by Yotpo}
   spec.homepage      = "https://github.com/YotpoLtd/seoshop-api"
