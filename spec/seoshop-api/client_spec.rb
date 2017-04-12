@@ -47,8 +47,8 @@ RSpec.describe Seoshop::Client do
 
       expect(conf).to receive(:adapter).with(:typhoeus)
       expect(conf).to receive(:basic_auth) # this could be improved
-      expect(conf).to receive(:request).with(:oj)
-      expect(conf).to receive(:response).with(:oj)
+      expect(conf).to receive(:request).with(:multi_json)
+      expect(conf).to receive(:response).with(:multi_json)
       expect(conf).to receive(:response).with(:rashify)
 
       expect(conf).to receive(:use).with(Seoshop::ResponseParser)
