@@ -5,14 +5,17 @@ module Seoshop
       response = get("#{@shop_language}/shop/tracking/count.json", params)
       response.body ? response.body['count'] : false
     end
+
     def get_trackings(params = {})
       response = get("#{@shop_language}/shop/tracking.json", params)
       response.body ? response.body['shopTracking'] : false
     end
 
-    def post_tracking(params)
+    def post_tracking(params, options = {})
+      return false if options[:skip_on_exists] && get_trackings.any?{|el| params[:content] == el.content }
+
       response = post("#{@shop_language}/shop/tracking.json", { "shopTracking" => params })
-      response.body ? response.body['shopTracking'] : false
+      response.status == 201
     end
 
     def update_tracking(tracking_id, params)
@@ -24,8 +27,10 @@ module Seoshop
       response = get("#{@shop_language}/shop/tracking/#{tracking_id}.json")
       response.body ? response.body['shopTracking'] : false
     end
+
+    # Always true? wtf?
     def delete_tracking(tracking_id)
-      response = delete("#{@shop_language}/shop/tracking/#{script_id}.json")
+      response = delete("#{@shop_language}/shop/tracking/#{tracking_id}.json")
       true
     end
   end

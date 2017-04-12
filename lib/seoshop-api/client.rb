@@ -3,6 +3,7 @@ require 'faraday'
 require 'typhoeus'
 require 'typhoeus/adapters/faraday'
 require 'faraday_middleware'
+require 'faraday_middleware/multi_json'
 require 'seoshop-api/core/response_parser'
 require 'seoshop-api/version'
 require 'seoshop-api/api/order'
@@ -10,10 +11,13 @@ require 'seoshop-api/api/shop'
 require 'seoshop-api/api/product'
 require 'seoshop-api/api/product_category'
 require 'seoshop-api/api/brand'
+require 'seoshop-api/api/tax'
 require 'seoshop-api/api/customer'
 require 'seoshop-api/api/account'
 require 'seoshop-api/api/shop_script'
 require 'seoshop-api/api/shop_tracking'
+require 'seoshop-api/api/catalog'
+require 'seoshop-api/fetch_resource_helper'
 
 module Seoshop
   class Client
@@ -26,6 +30,9 @@ module Seoshop
     include Seoshop::Customer
     include Seoshop::Account
     include Seoshop::Brand
+    include Seoshop::Tax
+    include Seoshop::Catalog
+    include Seoshop::FetchResourceHelper
 
     attr_accessor :api_key
     attr_accessor :api_secret
@@ -124,6 +131,14 @@ module Seoshop
       end
     end
 
+    def create_order_client(checkout_details, payment_details, shipping_details)
+      Seoshop::Client::Order.new(self, checkout_details, payment_details, shipping_details)
+    end
+
+    def create_ordered_product_client(checkout_id, variant_id, quantity, price)
+      Seoshop::Client::OrderedProduct.new(self, checkout_id, { variant_id: variant_id , quantity: quantity, special_price_incl: price })
+    end
+
     private
 
     #
@@ -164,7 +179,7 @@ module Seoshop
         conn.adapter :typhoeus
       end
     end
-    private
+
     def convert_hash_keys(value)
       case value
         when Array
