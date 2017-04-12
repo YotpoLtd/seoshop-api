@@ -33,19 +33,41 @@ module Seoshop
     include Seoshop::Catalog
     include Seoshop::FetchResourceHelper
 
+    attr_accessor :api_key
+    attr_accessor :api_secret
     attr_accessor :access_token
     attr_accessor :shop_language
+
+    SERVER_EU1_LIVE  = 'https://api.webshopapp.com/'
+    SERVER_US1_LIVE  = 'https://api.shoplightspeed.com/'
 
     #
     # Creates a new instance of Seoshop::Client
     #
-    # @param url [String] The url to Seoshop api (https://api.webshopapp.com)
+    # @param api_key [String] The App api key
+    # @param api_secret [String] The App secret
+    # @param access_token [String] The shop access token
+    # @param shop_language [String] The shop language
+    # @param cluster_id [String] The shop cluster id
     # @param parallel_requests [Integer String] The maximum parallel request to do (5)
-    def initialize(access_token, shop_language, url = 'https://api.webshopapp.com', parallel_requests = 5)
+    def initialize(api_key, api_secret, access_token, shop_language, cluster_id = 'eu1', parallel_requests = 5)
+      @api_key = api_key
+      @api_secret = api_secret
       @access_token = access_token
       @shop_language = shop_language
-      @url = url
+      @url = get_url(cluster_id)
       @parallel_requests = parallel_requests
+    end
+
+    def get_url(cluster_id)
+      case cluster_id
+        when 'eu1'
+          SERVER_EU1_LIVE
+        when 'us1'
+          SERVER_US1_LIVE
+        else
+          SERVER_EU1_LIVE
+      end
     end
 
     #
@@ -139,7 +161,7 @@ module Seoshop
     def connection
       @connection ||= Faraday.new(url: @url, parallel_manager: Typhoeus::Hydra.new(max_concurrency: @parallel_requests), headers: {:seoshop_api_connector => 'Ruby'+ Seoshop::VERSION}) do |conn|
 
-        conn.basic_auth(Seoshop.app_key, Digest::MD5.hexdigest(access_token + Seoshop.secret))
+        conn.basic_auth(@api_key, Digest::MD5.hexdigest(@access_token + @api_secret))
 
         conn.use Seoshop::ResponseParser
 

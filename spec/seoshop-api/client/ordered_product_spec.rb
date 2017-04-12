@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'ostruct'
 
 RSpec.describe Seoshop::Client::OrderedProduct do
-  let(:client) { Seoshop::Client.new('123', 'NL', 'http://localhost/seoshop-api') }
+  let(:client) { Seoshop::Client.new('app_key', 'secret', '123', 'NL', 'eu1') }
   let(:details){ { shipping_address: 'test address', billing_address: 'test address' } }
   let(:response){ OpenStruct.new(status: 201) }
 

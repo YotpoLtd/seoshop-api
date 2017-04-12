@@ -5,21 +5,10 @@ require 'seoshop-api/client/ordered_product'
 
 module Seoshop
   class << self
-    # @!attribute url
-    # @return [String] the base url of the Seoshop Api
-    attr_accessor :url
 
     # @!attribute parallel_requests
     # @return [Integer String] defines the maximum parallel request for the gem to preform
     attr_accessor :parallel_requests
-
-    # @!attribute app_key
-    # @return [String] the app key that is registered with Storenvy
-    attr_accessor :app_key
-
-    # @!attribute secret
-    # @return [String] the secret that is registered with Storenvy
-    attr_accessor :secret
 
     # Configuration interface of the gem
     #
@@ -32,8 +21,8 @@ module Seoshop
     #
     # @return an instance of Seoshop::Client
     #
-    def client(access_token, shop_language)
-      @client ||= Seoshop::Client.new(access_token, shop_language)
+    def client(api_key, api_secret, access_token, shop_language, cluster_id = 'eu1')
+      @client ||= Seoshop::Client.new(api_key, api_secret, access_token, shop_language, cluster_id)
     end
   end
 end
