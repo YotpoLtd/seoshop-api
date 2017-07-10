@@ -26,6 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'typhoeus'
   spec.add_dependency 'faraday_middleware'
   spec.add_dependency 'faraday_middleware-multi_json'
-  spec.add_dependency 'rash'
+  spec.add_dependency 'hashie'
   spec.add_dependency 'activesupport'
 end
