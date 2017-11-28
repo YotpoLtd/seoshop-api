@@ -3,6 +3,7 @@ require 'faraday'
 require 'typhoeus'
 require 'typhoeus/adapters/faraday'
 require 'faraday_middleware'
+require 'faraday_middleware/parse_oj'
 require 'seoshop-api/core/response_parser'
 require 'seoshop-api/version'
 require 'seoshop-api/api/order'
@@ -152,11 +153,10 @@ module Seoshop
         conn.use Seoshop::ResponseParser
 
         # Set the response to be rashified
-        conn.response :rashify
+        conn.response :mashify
 
         # Setting request and response to use JSON/XML
-        conn.request :multi_json
-        conn.response :multi_json
+        conn.response :oj
 
         # Set to use instrumentals to get time logs
         conn.use :instrumentation

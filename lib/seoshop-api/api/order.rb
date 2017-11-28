@@ -17,7 +17,7 @@ module Seoshop
 
     def get_order_products(order_id)
       response = get("#{@shop_language}/orders/#{order_id}/products.json")
-      response.body ? response.body['order_products'] : false
+      response.body ? response.body['orderProducts'] : false
     end
   end
 end
