@@ -6,7 +6,7 @@ module Seoshop
     end
     def get_product_category_path(product_id)
       response = get("#{@shop_language}/categories/products.json?product=#{product_id}")
-      categories_products = response.body ? response.body['categories_products'] : []
+      categories_products = response.body ? response.body['categoriesProducts'] : []
       categories_products.map{|category|
         get_category(category.category.resource.id).fulltitle
       }.join(">")
