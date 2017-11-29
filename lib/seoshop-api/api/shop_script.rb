@@ -7,7 +7,7 @@ module Seoshop
     end
     def get_scripts(params = {})
       response = get("#{@shop_language}/shop/scripts.json", params)
-      response.body ? response.body['shop_scripts'] || [] : []
+      response.body ? response.body['shopScript'] || [] : []
     end
 
     def post_script(params)
