@@ -153,7 +153,7 @@ module Seoshop
         conn.use Seoshop::ResponseParser
 
         # Set the response to be rashified
-        conn.response :mashify
+        conn.response :rashify
 
         # Setting request and response to use JSON/XML
         conn.response :oj
