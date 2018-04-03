@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
 
   spec.add_dependency 'oauth2'
-  spec.add_dependency 'faraday'
+  spec.add_dependency 'faraday', '~> 0.10'
   spec.add_dependency 'typhoeus'
   spec.add_dependency 'faraday_middleware'
   spec.add_dependency 'faraday_middleware-multi_json'
